@@ -1,0 +1,22 @@
+{
+  "version": "2026.07.1",
+  "updatedAt": "2026-07-26T00:00:00Z",
+  "npm": [
+    "express", "react", "react-dom", "lodash", "axios", "async", "commander",
+    "chalk", "request", "moment", "dotenv", "typescript", "next", "vue",
+    "webpack", "babel-core", "body-parser", "cors", "tslib", "rimraf",
+    "fs-extra", "bluebird", "debug", "glob", "uuid", "rxjs", "semver",
+    "inquirer", "yargs", "ws", "winston", "colors", "minimist", "cheerio",
+    "socket.io", "mongoose", "pg", "mysql2", "redis", "jest", "mocha",
+    "vite", "tailwindcss", "prettier", "eslint", "prettier-plugin-tailwindcss",
+    "langchain", "openai", "anthropic", "mcp", "viem", "ethers", "zod"
+  ],
+  "pypi": [
+    "requests", "urllib3", "numpy", "pandas", "flask", "django", "pytest",
+    "boto3", "setuptools", "wheel", "certifi", "idna", "charset-normalizer",
+    "pyyaml", "six", "python-dateutil", "typing-extensions", "pip",
+    "cryptography", "pillow", "scipy", "scikit-learn", "torch", "transformers",
+    "openai", "langchain", "pydantic", "fastapi", "httpx", "aiohttp",
+    "sqlalchemy", "celery", "redis", "click", "rich", "attrs", "tqdm"
+  ]
+}

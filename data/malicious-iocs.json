@@ -1,0 +1,81 @@
+{
+  "version": "2026.07.1",
+  "updatedAt": "2026-07-26T00:00:00Z",
+  "packages": [
+    {
+      "ecosystem": "npm",
+      "name": "flatmap-stream",
+      "versions": ["0.1.1"],
+      "reason": "Malicious crypto-stealing payload injected in event-stream incident",
+      "cve": "CVE-2018-3721",
+      "severity": "critical"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "event-stream",
+      "versions": ["3.3.6"],
+      "reason": "Compromised maintainer access loading malicious flatmap-stream dependency",
+      "cve": "CVE-2018-3721",
+      "severity": "critical"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "ua-parser-js",
+      "versions": ["0.7.29", "0.8.0", "1.0.0"],
+      "reason": "Account takeover leading to cryptominer and credential stealer placement",
+      "cve": "CVE-2021-42574",
+      "severity": "critical"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "coa",
+      "versions": ["2.0.3", "2.0.4", "3.0.1", "3.0.2"],
+      "reason": "Compromised npm account injecting password stealer",
+      "cve": "CVE-2021-42574",
+      "severity": "critical"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "rc",
+      "versions": ["1.2.9", "1.3.9", "2.3.9"],
+      "reason": "Compromised npm account executing malicious credential harvester",
+      "cve": "CVE-2021-42574",
+      "severity": "critical"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "nodegame-client",
+      "versions": ["*"],
+      "reason": "Shai-Hulud Miasma worm lineage malicious package",
+      "severity": "critical"
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@ai-agent-tools/core-execution",
+      "versions": ["1.0.4", "1.0.5"],
+      "reason": "Stolen maintainer account malware delivery path (June 2026 campaign)",
+      "severity": "critical"
+    },
+    {
+      "ecosystem": "pypi",
+      "name": "ctx",
+      "versions": ["0.1.2", "0.2.2"],
+      "reason": "Expired domain takeover used to exfiltrate environment variables",
+      "severity": "critical"
+    },
+    {
+      "ecosystem": "pypi",
+      "name": "requests-security",
+      "versions": ["*"],
+      "reason": "Typosquat malware exfiltrating AWS credentials and environment tokens",
+      "severity": "critical"
+    },
+    {
+      "ecosystem": "pypi",
+      "name": "py-cord-v2",
+      "versions": ["*"],
+      "reason": "Discord token grabber and malicious executable dropped on install",
+      "severity": "critical"
+    }
+  ]
+}
