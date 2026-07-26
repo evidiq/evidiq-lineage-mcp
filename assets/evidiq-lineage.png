@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+  <title id="title">EVIDIQ Lineage supply-chain provenance &amp; AI dependency risk</title>
+  <desc id="desc">Deterministic supply-chain provenance, SBOM, AI-BOM, and 14-rule risk analysis for AI-generated code.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="0.53" stop-color="#1e1b4b"/>
+      <stop offset="1" stop-color="#0284c7"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="45%" r="56%">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity=".55"/>
+      <stop offset=".48" stop-color="#4338ca" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#0f172a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="tree" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7dd3fc"/>
+      <stop offset="1" stop-color="#0284c7"/>
+    </linearGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="750" rx="40" fill="url(#bg)"/>
+  <rect width="1200" height="750" rx="40" fill="url(#glow)"/>
+  <g opacity=".22" stroke="#7dd3fc" fill="none">
+    <path d="M0 148H230L312 230H510"/><path d="M0 534H244L330 448H510"/>
+    <path d="M1200 148H970L888 230H690"/><path d="M1200 534H956L870 448H690"/>
+    <circle cx="230" cy="148" r="8" fill="#7dd3fc"/><circle cx="244" cy="534" r="8" fill="#7dd3fc"/>
+    <circle cx="970" cy="148" r="8" fill="#7dd3fc"/><circle cx="956" cy="534" r="8" fill="#7dd3fc"/>
+  </g>
+
+  <g transform="translate(600 365)">
+    <circle r="234" fill="#0284c7" opacity=".15" filter="url(#soft)"/>
+    <circle r="198" fill="none" stroke="#38bdf8" stroke-opacity=".32" stroke-width="2" stroke-dasharray="7 14"/>
+    <circle r="162" fill="#0f172a" stroke="#0284c7" stroke-width="2"/>
+    <!-- Lineage DAG graph nodes -->
+    <path d="M0 -90 L-80 0 L-40 80 L40 80 L80 0 Z" fill="none" stroke="url(#tree)" stroke-width="5" stroke-linejoin="round"/>
+    <circle cx="0" cy="-90" r="14" fill="#38bdf8"/>
+    <circle cx="-80" cy="0" r="14" fill="#818cf8"/>
+    <circle cx="80" cy="0" r="14" fill="#818cf8"/>
+    <circle cx="-40" cy="80" r="14" fill="#34d399"/>
+    <circle cx="40" cy="80" r="14" fill="#34d399"/>
+  </g>
+
+  <g font-family="ui-sans-serif, system-ui, sans-serif" fill="#fff">
+    <text x="76" y="96" font-size="25" font-weight="700" letter-spacing="7" fill="#7dd3fc">EVIDIQ LINEAGE</text>
+    <text x="76" y="145" font-size="27" fill="#e0f2fe">Supply-chain provenance &amp; AI dependency risk</text>
+  </g>
+
+  <g transform="translate(72 610)">
+    <rect width="276" height="77" rx="16" fill="#ffffff" fill-opacity=".1" stroke="#7dd3fc" stroke-opacity=".38"/>
+    <text x="22" y="30" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="700" letter-spacing="2" fill="#7dd3fc">LINEAGE REPORT</text>
+    <text x="22" y="59" font-family="ui-monospace, monospace" font-size="23" font-weight="700" fill="#f0f9ff">PASS / BLOCK (14 Rules)</text>
+  </g>
+
+  <g transform="translate(852 586)">
+    <rect width="276" height="101" rx="16" fill="#ffffff" fill-opacity=".1" stroke="#38bdf8" stroke-opacity=".45"/>
+    <text x="22" y="32" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="700" letter-spacing="2" fill="#38bdf8">BOM &amp; PROVENANCE</text>
+    <text x="22" y="62" font-family="ui-sans-serif, system-ui, sans-serif" font-size="19" font-weight="700" fill="#f0f9ff">CycloneDX 1.6 · SPDX 3.0</text>
+    <text x="22" y="86" font-family="ui-sans-serif, system-ui, sans-serif" font-size="19" font-weight="700" fill="#f0f9ff">CycloneDX-AI-1.6 · EIP-191</text>
+  </g>
+</svg>
