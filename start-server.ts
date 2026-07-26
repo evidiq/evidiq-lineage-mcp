@@ -161,7 +161,8 @@ const server = createServer(async (request, response) => {
 
   if (path === "/skill.md") {
     try {
-      const skill = await readFile(new URL("./skill.md", import.meta.url), "utf8");
+      // Resolved from dist/ at runtime, so skill.md sits one level up next to package.json.
+      const skill = await readFile(new URL("../skill.md", import.meta.url), "utf8");
       response.writeHead(200, { "content-type": "text/markdown; charset=utf-8", "cache-control": "public, max-age=300" });
       response.end(skill);
     } catch (error) {

@@ -13,7 +13,9 @@
 <p align="center">
   <a href="https://evidiq.dev">evidiq.dev</a> &middot;
   <a href="https://evidiq.dev/docs/lineage">Lineage Docs</a> &middot;
-  <a href="https://github.com/evidiq/evidiq-lineage-mcp">Lineage Repository</a>
+  <a href="https://mcp.evidiq.dev/lineage/skill.md">Agent Skill</a> &middot;
+  <a href="https://github.com/evidiq/evidiq">EVIDIQ Main</a> &middot;
+  <a href="https://github.com/evidiq/evidiq-lineage-mcp">Lineage MCP</a>
 </p>
 
 <p align="center">
@@ -22,6 +24,7 @@
   <a href="https://www.oklink.com/xlayer"><img src="https://img.shields.io/badge/X%20Layer-USDT0-3CCF4E?style=flat-square" alt="X Layer USDT0" /></a>
   <a href="https://mcp.evidiq.dev/lineage/x402"><img src="https://img.shields.io/badge/x402-0.005%E2%80%930.03%20USDT0-2563EB?style=flat-square" alt="x402: 0.005 to 0.03 USDT0" /></a>
   <a href="https://web3.okx.com/onchainos/dev-docs/payments/service-seller-sdk"><img src="https://img.shields.io/badge/Payments-Official%20OKX%20SDK-121212?style=flat-square&logo=okx&logoColor=white" alt="Official OKX Payment SDK" /></a>
+  <a href="https://www.okx.ai/agents/9575"><img src="https://img.shields.io/badge/OKX.AI-Agent%20%239575%20Under%20Review-121212?style=flat-square&logo=okx&logoColor=white" alt="OKX.AI Agent 9575 under review" /></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-3DA639?style=flat-square" alt="License: MIT" /></a>
 </p>
 
@@ -32,7 +35,9 @@ AI agents frequently generate, install, and execute code containing external pac
 **EVIDIQ Lineage is the deterministic supply-chain provenance layer for the agent economy.**
 It evaluates npm and PyPI package manifests against a 14-rule security risk engine, queries live OSV.dev advisories, audits licenses, and generates standard CycloneDX 1.6 / SPDX 3.0 SBOMs and CycloneDX-AI-1.6 AI-BOMs. Every report ships a SHA-256 integrity digest and an EIP-191 signature.
 
-> **Launch status: live endpoint.** The MCP server is deployed at `https://mcp.evidiq.dev/lineage/mcp` and paid calls settle through the official OKX Payment SDK.
+> **Launch status: live endpoint.** The MCP server is deployed at
+> `https://mcp.evidiq.dev/lineage/mcp`, paid calls settle through the official OKX
+> Payment SDK, and the OKX.AI listing (**Agent #9575**) is under review.
 
 ## What it does
 
@@ -161,6 +166,35 @@ Payment verification and settlement run through the **official OKX Onchain OS Pa
 | [`@okxweb3/x402-core`](https://www.npmjs.com/package/@okxweb3/x402-core) | `OKXFacilitatorClient` (HMAC-SHA256 OKX REST auth) and `x402ResourceServer` |
 | [`@okxweb3/x402-evm`](https://www.npmjs.com/package/@okxweb3/x402-evm) | `ExactEvmScheme` — the EVM `exact` scheme server implementation |
 
+The OKX facilitator verifies each authorization and settles it on X Layer; Lineage
+keeps ownership of parsing, the rule engine, report signing, and anchoring. Each
+immutable per-tool price reaches the SDK as an explicit USD₮0 **atomic asset
+amount** rather than a USD string, so neither the fee nor its token can be
+substituted by currency conversion.
+
+When the facilitator's own confirmation wait elapses it answers `timeout` even
+though the transaction it broadcast can still confirm moments later, so Lineage
+resolves that state through the facilitator's settlement-status lookup rather than
+discarding a paid call. Success is only ever reported when the facilitator
+confirms it.
+
+Integration guide: [OKX Onchain OS — integrate via SDK](https://web3.okx.com/onchainos/dev-docs/payments/service-seller-sdk).
+
+## Proven on-chain
+
+Live paid calls against the deployed endpoint completed the full x402 v2 round trip
+through the official OKX facilitator:
+
+| Tool | Amount | Settlement tx | Result |
+|------|--------|---------------|--------|
+| `verify_package_claim` | `0.005 USDT0` (`5000` atomic) | [`0xfd9a7480…c2ea2af`](https://www.oklink.com/xlayer/tx/0xfd9a7480710d7278a7b965d47a6568a59b9651aa5826f5f16e80df448c2ea2af) · success | live registry answer: exists, age, maintainers, deprecation, provenance |
+| `scan_dependencies` | `0.02 USDT0` (`20000` atomic) | [`0xcf5360d5…b23423`](https://www.oklink.com/xlayer/tx/0xcf5360d545bc941153e04d6079365248507a81e617f809f650840c7c48b23423) · success | score `60`, verdict `REVIEW`, `TYPOSQUAT_DISTANCE` caught `expresss` |
+
+Flow for both: unpaid call → HTTP 402 + `PAYMENT-REQUIRED` → EIP-3009 signature →
+`PAYMENT-SIGNATURE` retry → HTTP 200 + `PAYMENT-RESPONSE` (`status: settled`).
+Both receipts are `status 0x1` on X Layer. Free tools stay ungated and answer `200`
+without any payment header.
+
 ## Architecture
 
 ```mermaid
@@ -224,7 +258,7 @@ Or run the container:
 
 ```bash
 docker build -t evidiq-lineage .
-docker run -d --name evidiq-lineage -p 3005:3000 --env-file .env evidiq-lineage
+docker run -d --name evidiq-lineage -p 3000:3000 --env-file .env evidiq-lineage
 ```
 
 Local routes: `POST /mcp` · `GET /skill.md` · `GET /x402` · `GET /health`
@@ -270,7 +304,10 @@ npm run dev      # start local watch server
 - **Live MCP endpoint** — https://mcp.evidiq.dev/lineage/mcp
 - **Agent Skill** — https://mcp.evidiq.dev/lineage/skill.md
 - **x402 discovery** — https://mcp.evidiq.dev/lineage/x402
+- **Service health** — https://mcp.evidiq.dev/lineage/health
+- **OKX.AI Agent #9575** — https://www.okx.ai/agents/9575
 - **OKX Payment SDK guide** — https://web3.okx.com/onchainos/dev-docs/payments/service-seller-sdk
+- **Settlement proof** — https://www.oklink.com/xlayer/tx/0xfd9a7480710d7278a7b965d47a6568a59b9651aa5826f5f16e80df448c2ea2af
 - **EVIDIQ main repository** — https://github.com/evidiq/evidiq
 - **x402 Protocol** — https://x402.org
 

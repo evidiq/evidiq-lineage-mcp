@@ -70,3 +70,15 @@ Prices are immutable in service code. Asset: USDT0 with 6 decimals on X Layer (`
 - Skill: `GET https://mcp.evidiq.dev/lineage/skill.md`
 - Pricing: `GET https://mcp.evidiq.dev/lineage/x402`
 - MCP: `POST https://mcp.evidiq.dev/lineage/mcp`
+
+## Settlement proof
+
+Paid calls settle through the official OKX Onchain OS Payment SDK
+(`@okxweb3/x402-core` + `@okxweb3/x402-evm`). Live examples on X Layer, both `status 0x1`:
+
+- `verify_package_claim` — `0.005 USDT0` — `0xfd9a7480710d7278a7b965d47a6568a59b9651aa5826f5f16e80df448c2ea2af`
+- `scan_dependencies` — `0.02 USDT0` — `0xcf5360d545bc941153e04d6079365248507a81e617f809f650840c7c48b23423`
+
+## Version
+
+`v1.0.0` — MIT © 2026 EVIDIQ — OKX.AI Agent #9575.
