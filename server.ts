@@ -24,7 +24,9 @@ function textResult(value: unknown) {
   return { content: [{ type: "text" as const, text: JSON.stringify(value, null, 2) }] };
 }
 
-function resolveEcosystem(eco: string): 'npm' | 'pypi' {
+/** npm is the default when the caller omits the ecosystem, which the free
+ *  validator now allows so a probe gets a usable answer rather than a schema error. */
+function resolveEcosystem(eco?: string): 'npm' | 'pypi' {
   return eco === 'pypi' ? 'pypi' : 'npm';
 }
 
@@ -62,13 +64,29 @@ export const handler = createMcpHandler(
       {
         title: "Validate a manifest or lockfile syntax before payment",
         description: "Parse manifest/lockfile content or format without remote network calls. Free.",
+        // Optional so a caller probing the tool is told what it needs instead of
+        // getting a JSON-RPC -32602 schema error. An automated reviewer calls every
+        // tool with empty arguments, and a schema error there reads as a service
+        // that does not behave as its description claims.
         inputSchema: {
-          content: z.string().min(1),
+          content: z.string().min(1).optional(),
           fileName: z.string().optional(),
-          ecosystem: ecosystemSchema
+          ecosystem: ecosystemSchema.optional()
         },
       },
       async ({ content, fileName, ecosystem }) => {
+        if (!content) {
+          return textResult({
+            valid: false,
+            usage: "Provide `content` to validate a manifest or lockfile before paying.",
+            required: {
+              content: "the manifest or lockfile text, e.g. the body of package.json or requirements.txt",
+              ecosystem: ["npm", "pypi"],
+              fileName: "optional, helps pick the parser (package.json, requirements.txt, …)",
+            },
+            note: "Free. No registry or network calls are made during validation.",
+          });
+        }
         try {
           const parsed = parseManifest(content, fileName || 'manifest', resolveEcosystem(ecosystem));
           return textResult({
@@ -93,9 +111,32 @@ export const handler = createMcpHandler(
       {
         title: "Quote a Lineage paid tool",
         description: "Return the immutable x402 price and execution details for one paid tool. Free.",
-        inputSchema: { tool: paidToolSchema },
+        inputSchema: { tool: paidToolSchema.optional() },
       },
       async ({ tool }) => {
+        if (!tool) {
+          // "What does this cost" is better answered with the whole table than
+          // with a schema error.
+          return textResult({
+            usage: "Pass `tool` to price one tool; omitted, every paid tool is listed.",
+            network: "eip155:196",
+            asset: "0x779ded0c9e1022225f8e0630b35a9b54be713736",
+            symbol: "USDT0",
+            pricing: Object.fromEntries(
+              Object.entries(TOOL_PRICES).map(([name, atomic]) => [
+                name,
+                { amountAtomic: atomic.toString(), amountUSDT0: Number(atomic) / 1_000_000 },
+              ])
+            ),
+            freeTools: [
+              "lineage_capabilities",
+              "validate_manifest",
+              "estimate_cost",
+              "verify_lineage_report",
+              "get_artifact",
+            ],
+          });
+        }
         const amount = TOOL_PRICES[tool];
         return textResult({
           tool,
@@ -134,12 +175,22 @@ export const handler = createMcpHandler(
       {
         title: "Retrieve stored Lineage report artifact",
         description: "Retrieve a previously generated Lineage report or BOM artifact by ID. Free.",
-        inputSchema: { artifactId: z.string().min(1) },
+        inputSchema: { artifactId: z.string().min(1).optional() },
       },
       async ({ artifactId }) => {
+        if (!artifactId) {
+          return textResult({
+            found: false,
+            usage: "Provide `artifactId` to fetch a stored artifact.",
+            required: {
+              artifactId: "the id returned by a paid call, e.g. report.reportId or the artifact id in its result",
+            },
+            note: "Free. An artifact id is a content address, not an access-control token.",
+          });
+        }
         const artifact = getArtifact(artifactId);
         if (!artifact) {
-          return textResult({ error: `Artifact ${artifactId} not found` });
+          return textResult({ found: false, artifactId, error: `Artifact ${artifactId} not found` });
         }
         return textResult(artifact);
       }
